@@ -1,0 +1,271 @@
+[
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Name using expression value.trim()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Name",
+    "expression": "value.trim()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Name using expression value.replace(/\\s+/,' ')",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Name",
+    "expression": "value.replace(/\\s+/,' ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Name using expression grel:replace(value, ',', '')",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Name",
+    "expression": "grel:replace(value, ',', '')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Name using expression grel:replace(value, ' ', '+')",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Name",
+    "expression": "grel:replace(value, ' ', '+')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "description": "Create column ORCID Record at index 1 by fetching URLs based on column Name using expression grel:\"http://pub.orcid.org/v1.1/search/orcid-bio?q=\" + value",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "ORCID Record",
+    "columnInsertIndex": 1,
+    "baseColumnName": "Name",
+    "urlExpression": "grel:\"http://pub.orcid.org/v1.1/search/orcid-bio?q=\" + value",
+    "onError": "set-to-blank",
+    "delay": 200
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column ORCID Record using expression grel:value.parseHtml().select('orcid-search-result')[0].toString()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('orcid-search-result')[0].toString()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Family Name at index 2 based on column ORCID Record using expression grel:value.parseHtml().select('family-name')[0].htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "Family Name",
+    "columnInsertIndex": 2,
+    "baseColumnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('family-name')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Given Name at index 2 based on column ORCID Record using expression grel:value.parseHtml().select('given-names')[0].htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "Given Name",
+    "columnInsertIndex": 2,
+    "baseColumnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('given-names')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column Given Name to position 3",
+    "columnName": "Given Name",
+    "index": 3
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column ORCID ID at index 2 based on column ORCID Record using expression grel:value.parseHtml().select('path')[0].htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "ORCID ID",
+    "columnInsertIndex": 2,
+    "baseColumnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('path')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column ORCID ID to position 4",
+    "columnName": "ORCID ID",
+    "index": 4
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column ORCID Link at index 5 based on column ORCID ID using expression grel:\"http://orcid.org/\" + value",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "ORCID Link",
+    "columnInsertIndex": 5,
+    "baseColumnName": "ORCID ID",
+    "expression": "grel:\"http://orcid.org/\" + value",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Relevancy Score at index 2 based on column ORCID Record using expression grel:value.parseHtml().select('relevancy-score')[0].htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "Relevancy Score",
+    "columnInsertIndex": 2,
+    "baseColumnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('relevancy-score')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Biography at index 2 based on column ORCID Record using expression grel:value.parseHtml().select('biography')[0].htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "Biography",
+    "columnInsertIndex": 2,
+    "baseColumnName": "ORCID Record",
+    "expression": "grel:value.parseHtml().select('biography')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column Biography to position 7",
+    "columnName": "Biography",
+    "index": 7
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column Family Name to position 2",
+    "columnName": "Family Name",
+    "index": 2
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column Given Name to position 3",
+    "columnName": "Given Name",
+    "index": 3
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column ORCID Record",
+    "columnName": "ORCID Record"
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "description": "Create column ORCID Full Profile at index 5 by fetching URLs based on column ORCID ID using expression grel:\"http://pub.orcid.org/v1.1/\" + value + \"/orcid-profile\"",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "ORCID Full Profile",
+    "columnInsertIndex": 5,
+    "baseColumnName": "ORCID ID",
+    "urlExpression": "grel:\"http://pub.orcid.org/v1.1/\" + value + \"/orcid-profile\"",
+    "onError": "set-to-blank",
+    "delay": 200
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Works at index 6 based on column ORCID Full Profile using expression grel:value.parseHtml().select('work-title').toString()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "newColumnName": "Works",
+    "columnInsertIndex": 6,
+    "baseColumnName": "ORCID Full Profile",
+    "expression": "grel:value.parseHtml().select('work-title').toString()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Works using expression grel:replace(value, '</work-title>', ';</work-title>')",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Works",
+    "expression": "grel:replace(value, '</work-title>', ';</work-title>')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Works using expression grel:value.parseHtml().htmlText()",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Works",
+    "expression": "grel:value.parseHtml().htmlText()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column ORCID Full Profile",
+    "columnName": "ORCID Full Profile"
+  },
+  {
+    "op": "core/column-move",
+    "description": "Move column Biography to position 6",
+    "columnName": "Biography",
+    "index": 6
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Name using expression grel:replace(value, '+', ' ')",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Name",
+    "expression": "grel:replace(value, '+', ' ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  }
+]
