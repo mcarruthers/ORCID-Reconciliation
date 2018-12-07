@@ -1,4 +1,2 @@
 # ORCID-Reconciliation
-Using Google Refine and the public ORCID API, reconciles researcher names against ORCID profiles.
-
-Script currently in development.
+Using OpenRefine and the public ORCID API, reconciles researcher names against ORCID profiles.
